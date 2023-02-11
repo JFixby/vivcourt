@@ -4,9 +4,10 @@ import "encoding/json"
 
 type OrderType string
 
-const NEW OrderType = "NEW"
-const CANCEL OrderType = "CANCEL"
-const FLUSH OrderType = "FLUSH"
+const ADD OrderType = "ADD"
+const UPDATE OrderType = "UPDATE"
+const DELETE OrderType = "DELETE"
+const EXECUTE OrderType = "EXECUTE"
 
 type Side string
 

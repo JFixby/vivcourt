@@ -95,16 +95,16 @@ type OrderList struct {
 }
 
 func (b *Book) DoUpdate(ev *Event) {
-	if ev.OrderType == NEW {
-		b.NewOrder(ev)
-	}
-	if ev.OrderType == CANCEL {
-		b.CancelOrder(ev)
-	}
-	if ev.OrderType == FLUSH {
-		b.Reset()
-		b.over()
-	}
+	//if ev.OrderType == NEW {
+	//	b.NewOrder(ev)
+	//}
+	//if ev.OrderType == CANCEL {
+	//	b.CancelOrder(ev)
+	//}
+	//if ev.OrderType == FLUSH {
+	//	b.Reset()
+	//	b.over()
+	//}
 
 }
 
