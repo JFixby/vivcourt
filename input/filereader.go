@@ -2,6 +2,7 @@ package input
 
 import (
 	"github.com/jfixby/pin"
+	"io"
 	"os"
 )
 
@@ -52,7 +53,11 @@ func (r *FileReader) runthread() {
 	}
 
 	for r.runFlag {
-		data, err := ReadMessageData(file)
+		sequence, data, err := ReadMessageData(file)
+
+		if err == io.EOF {
+			break
+		}
 
 		if err != nil {
 			pin.E("failed to read file", err)
@@ -65,7 +70,7 @@ func (r *FileReader) runthread() {
 			break
 		}
 
-		event := ParseEvent(data)
+		event := ParseEvent(sequence, data)
 		if r.listener != nil {
 			if event != nil {
 				r.listener.DoProcess(event)

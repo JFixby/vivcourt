@@ -10,10 +10,9 @@ type BookListener interface {
 }
 
 type Book struct {
-	BookListener  BookListener
-	markets       map[Symbol]*Market
-	TradingModeON bool
-	ordersById    map[OrderID]*OrderList
+	BookListener BookListener
+	markets      map[Symbol]*Market
+	ordersById   map[OrderID]*OrderList
 }
 
 type Market struct {
@@ -43,12 +42,12 @@ func (b *Book) removeOrder(orderId OrderID) {
 	}
 
 	if orderStack.Len() == 0 {
-		b.bestShallow(order.Side)
+		//b.bestShallow(order.Side)
 	} else {
 		if wasBestOrder {
-			newBestOrderID := findBestOrderID(orderStack, order.Side)
-			o, l := b.findOrder(newBestOrderID)
-			b.best(o, l.totalQuantity)
+			//newBestOrderID := findBestOrderID(orderStack, order.Side)
+			//o, l := b.findOrder(newBestOrderID)
+			//	b.best(o, l.totalQuantity)
 		}
 	}
 
@@ -85,7 +84,6 @@ type Order struct {
 	Price    Price
 	Symbol   Symbol
 	Side     Side
-	UserID   UserID
 }
 
 type OrderList struct {
@@ -114,19 +112,12 @@ func (b *Book) NewOrder(ev *Event) {
 	order.OrderID = ev.OrderID
 	order.Price = ev.Price
 	order.Symbol = ev.Symbol
-	order.Quantity = ev.Quantity
+	order.Quantity = ev.Size
 	order.Side = ev.Side
-	order.UserID = ev.UserID
 
 	if b.orderIsTradeable(order) {
-		if b.TradingModeON {
-			b.acknow(order.UserID, order.OrderID)
-			b.execute(order)
-		} else {
-			b.reject(order)
-		}
+		b.execute(order)
 	} else {
-		b.acknow(order.UserID, order.OrderID)
 		b.append(order)
 	}
 
@@ -150,47 +141,7 @@ func (b *Book) getMarket(symbol Symbol) *Market {
 func (b *Book) Reset() *Book {
 	b.markets = nil
 	b.ordersById = nil
-	b.TradingModeON = false
 	return b
-}
-
-func (b *Book) over() {
-	bev := &BookEvent{}
-	bev.EventType = OVER
-	b.BookListener.OnBookEvent(bev)
-}
-
-func (b *Book) acknow(userID UserID, orderId OrderID) {
-	bev := &BookEvent{}
-	bev.EventType = ACKNOWLEDGE
-	bev.UserIDAcknowledge = userID
-	bev.OrderIDAcknowledge = orderId
-	b.BookListener.OnBookEvent(bev)
-}
-
-func (b *Book) reject(order *Order) {
-	bev := &BookEvent{}
-	bev.EventType = REJECT
-	bev.UserIDReject = order.UserID
-	bev.OrderIDReject = order.OrderID
-	b.BookListener.OnBookEvent(bev)
-}
-
-func (b *Book) best(order *Order, totalQuantity Quantity) {
-	bev := &BookEvent{}
-	bev.EventType = BEST
-	bev.Side = order.Side
-	bev.Quantity = totalQuantity
-	bev.Price = order.Price
-	b.BookListener.OnBookEvent(bev)
-}
-
-func (b *Book) bestShallow(side Side) {
-	bev := &BookEvent{}
-	bev.EventType = BEST
-	bev.ShallowAsk = true
-	bev.Side = side
-	b.BookListener.OnBookEvent(bev)
 }
 
 func (b *Book) append(order *Order) {
@@ -233,14 +184,13 @@ func (b *Book) append(order *Order) {
 	}
 
 	if price == order.Price {
-		b.best(order, olist.totalQuantity)
+		//b.best(order, olist.totalQuantity)
 	}
 
 	return
 }
 
 func (b *Book) CancelOrder(order *Event) {
-	b.acknow(order.UserID, order.OrderID)
 	b.removeOrder(order.OrderID)
 }
 
@@ -313,7 +263,6 @@ func (b *Book) execute(order *Order) {
 				nextOrder.Quantity = nextOrder.Quantity - quantityToExecute
 				remainingQuantity = remainingQuantity - quantityToExecute //should be 0
 				orders.totalQuantity = orders.totalQuantity - quantityToExecute
-				b.best(nextOrder, orders.totalQuantity)
 
 				break
 			}
@@ -341,16 +290,14 @@ func Invert(side Side) Side {
 
 func (b *Book) executeOrder(buy *Order, sell *Order, price Price, quantity Quantity) {
 	bev := &BookEvent{}
-	bev.EventType = TRADE
+	//bev.EventType = TRADE
 
-	bev.UserIDBuy = buy.UserID
-	bev.OrderIDBuy = buy.OrderID
-
-	bev.UserIDSell = sell.UserID
-	bev.OrderIDSell = sell.OrderID
-
-	bev.Price = price
-	bev.Quantity = quantity
+	//bev.OrderIDBuy = buy.OrderID
+	//
+	//bev.OrderIDSell = sell.OrderID
+	//
+	//bev.Price = price
+	//bev.Quantity = quantity
 
 	b.BookListener.OnBookEvent(bev)
 }

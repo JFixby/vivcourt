@@ -38,7 +38,11 @@ func (o *TestOutput) LoadAll() error {
 			}
 		}
 
-		event := TryToParse(txt)
+		event, err := TryToParse(txt)
+		if err != nil {
+			pin.E("failed to read input", file)
+			panic(err)
+		}
 		if event != nil {
 			//pin.D("", event)
 			o.data[tag] = append(o.data[tag], event)
@@ -57,7 +61,8 @@ func (o *TestOutput) GetEvent(scenario string, counter int) *orderbook.BookEvent
 		panic("")
 	}
 	if counter == len(list) {
-		return &orderbook.BookEvent{EventType: orderbook.OVER}
+		//return &orderbook.BookEvent{EventType: orderbook.OVER}
+		return nil
 	}
 	if counter >= len(list) {
 		pin.E("output not found  ", o.data)
@@ -73,140 +78,79 @@ func (o *TestOutput) Print() {
 	}
 }
 
-func TryToParse(txt string) *orderbook.BookEvent {
+func TryToParse(txt string) (*orderbook.BookEvent, error) {
 	if txt == "" {
-		return nil
+		return nil, nil
 	}
 
 	if txt[0:1] == "#" {
-		return nil
+		return nil, nil
 	}
 
 	arr := strings.Split(txt, ", ")
 
 	result := &orderbook.BookEvent{}
 
-	if arr[0] == "A" {
-		result.EventType = orderbook.ACKNOWLEDGE
+	sequenceId, err := strconv.Atoi(arr[0])
+	if err != nil {
+		return nil, err
+	}
+	result.SequenceNumber = orderbook.SequenceNumber(sequenceId)
 
-		userID, err := strconv.Atoi(arr[1])
-		if err != nil {
-			pin.E("invalid input", txt)
-			return nil
-		}
-		result.UserIDAcknowledge = orderbook.UserID(userID)
+	result.Symbol = orderbook.Symbol(arr[1])
 
-		orderID, err := strconv.Atoi(arr[2])
-		if err != nil {
-			pin.E("invalid input", txt)
-			return nil
-		}
-		result.OrderIDAcknowledge = orderbook.OrderID(orderID)
-		return result
+	f := strings.Index(txt, "[") + 1
+	t := strings.Index(txt, "]")
+	result.Buy, err = collectArray(string(txt[f:t]))
+	if err != nil {
+		return nil, err
 	}
 
-	if arr[0] == "B" {
-		result.EventType = orderbook.BEST
-
-		if arr[1] == "S" {
-			result.Side = orderbook.SELL
-		} else if arr[1] == "B" {
-			result.Side = orderbook.BUY
-		} else {
-			pin.E("Unknown order side", txt)
-			return nil
-		}
-
-		if arr[2] == "-" {
-			result.ShallowAsk = true
-		} else {
-			price, err := strconv.Atoi(arr[2])
-			if err != nil {
-				pin.E("invalid input", txt)
-				return nil
-			}
-			result.Price = orderbook.Price(price)
-		}
-
-		if arr[3] == "-" {
-			result.ShallowAsk = true
-		} else {
-			quantity, err := strconv.Atoi(arr[3])
-			if err != nil {
-				pin.E("invalid input", txt)
-				return nil
-			}
-			result.Quantity = orderbook.Quantity(quantity)
-		}
-
-		return result
+	txt = txt[t+1:]
+	f = strings.Index(txt, "[") + 1
+	t = strings.Index(txt, "]")
+	result.Sell, err = collectArray(string(txt[f:t]))
+	if err != nil {
+		return nil, err
 	}
 
-	if arr[0] == "R" {
-		result.EventType = orderbook.REJECT
+	return result, nil
 
-		userID, err := strconv.Atoi(arr[1])
-		if err != nil {
-			pin.E("invalid input", txt)
-			return nil
-		}
-		result.UserIDReject = orderbook.UserID(userID)
+}
 
-		orderID, err := strconv.Atoi(arr[2])
-		if err != nil {
-			pin.E("invalid input", txt)
-			return nil
+func collectArray(array string) (*[]orderbook.Executed, error) {
+	result := []orderbook.Executed{}
+
+	for {
+		f := strings.Index(array, "(")
+		if f == -1 {
+			break
 		}
-		result.OrderIDReject = orderbook.OrderID(orderID)
-		return result
+		l := strings.Index(array, ")")
+		if l == -1 {
+			panic("")
+		}
+		fragment := array[f+1 : l]
+		array = array[l+1:]
+
+		xyStr := strings.Split(fragment, ", ")
+
+		price, err := strconv.Atoi(xyStr[0])
+		if err != nil {
+			panic(err)
+		}
+
+		quantity, err := strconv.Atoi(xyStr[1])
+		if err != nil {
+			panic(err)
+		}
+
+		result = append(result, orderbook.Executed{
+			Price: orderbook.Price(price),
+			Size:  orderbook.Quantity(quantity),
+		})
+
 	}
 
-	if arr[0] == "T" {
-		result.EventType = orderbook.TRADE
-
-		userIDBuy, err := strconv.Atoi(arr[1])
-		if err != nil {
-			pin.E("invalid input", txt)
-			return nil
-		}
-		result.UserIDBuy = orderbook.UserID(userIDBuy)
-
-		orderIDBuy, err := strconv.Atoi(arr[2])
-		if err != nil {
-			pin.E("invalid input", txt)
-			return nil
-		}
-		result.OrderIDBuy = orderbook.OrderID(orderIDBuy)
-
-		userIDSell, err := strconv.Atoi(arr[3])
-		if err != nil {
-			pin.E("invalid input", txt)
-			return nil
-		}
-		result.UserIDSell = orderbook.UserID(userIDSell)
-
-		orderIDSell, err := strconv.Atoi(arr[4])
-		if err != nil {
-			pin.E("invalid input", txt)
-			return nil
-		}
-		result.OrderIDSell = orderbook.OrderID(orderIDSell)
-
-		price, err := strconv.Atoi(arr[5])
-		if err != nil {
-			pin.E("invalid input", txt)
-			return nil
-		}
-		result.Price = orderbook.Price(price)
-
-		quantity, err := strconv.Atoi(arr[6])
-		if err != nil {
-			pin.E("invalid input", txt)
-			return nil
-		}
-		result.Quantity = orderbook.Quantity(quantity)
-		return result
-	}
-
-	return nil
+	return &result, nil
 }

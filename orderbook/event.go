@@ -15,19 +15,19 @@ const BUY Side = "BUY"
 const SELL Side = "SELL"
 
 type Symbol string
-type UserID int64
 type OrderID int64
 type Price int64
 type Quantity int64
+type SequenceNumber uint32
 
 type Event struct {
-	OrderType OrderType
-	UserID    UserID
-	Symbol    Symbol
-	Price     Price
-	Quantity  Quantity
-	Side      Side
-	OrderID   OrderID
+	SequenceNumber SequenceNumber
+	OrderType      OrderType
+	Symbol         Symbol
+	Price          Price
+	Size           Quantity
+	Side           Side
+	OrderID        OrderID
 }
 
 func (e *Event) String() string {
@@ -35,25 +35,16 @@ func (e *Event) String() string {
 	return string(b)
 }
 
+type Executed struct {
+	Price Price
+	Size  Quantity
+}
+
 type BookEvent struct {
-	//Input *Event
-
-	EventType EventType
-
-	UserIDAcknowledge UserID
-	UserIDSell        UserID
-	UserIDBuy         UserID
-	UserIDReject      UserID
-
-	Price    Price
-	Quantity Quantity
-	Side     Side
-
-	OrderIDBuy         OrderID
-	OrderIDSell        OrderID
-	OrderIDAcknowledge OrderID
-	OrderIDReject      OrderID
-	ShallowAsk         bool
+	SequenceNumber SequenceNumber
+	Symbol         Symbol
+	Buy            *[]Executed
+	Sell           *[]Executed
 }
 
 func (e *BookEvent) String() string {
@@ -62,13 +53,5 @@ func (e *BookEvent) String() string {
 }
 
 func (e *BookEvent) Equal(a *BookEvent) bool {
-	return *e == *a
+	return e == a
 }
-
-type EventType string
-
-const ACKNOWLEDGE EventType = "ACKNOWLEDGE"
-const REJECT EventType = "REJECT"
-const BEST EventType = "BEST"
-const TRADE EventType = "TRADE"
-const OVER EventType = "OVER"

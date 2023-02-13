@@ -18,7 +18,7 @@ func TestInput(t *testing.T) {
 	home := fileops.Abs("")
 	testData := filepath.Join(home, "test", "test1")
 	testInput := filepath.Join(testData, "input", "in.stream")
-	//testOutput := filepath.Join(testData, "output", "out.log")
+	//testOutput := filepath.Join(testData, "output", "expected.log")
 
 	reader := input.NewFileReader(testInput)
 	testListener := &InputTestListener{}
@@ -37,6 +37,7 @@ type InputTestListener struct {
 
 func (t *InputTestListener) DoProcess(ev *orderbook.Event) {
 	pin.D("Event received", ev)
+	pin.D(" ")
 }
 
 func (t *InputTestListener) Reset(scenario string) {
