@@ -1,6 +1,7 @@
 package orderbook
 
 import (
+	"fmt"
 	"github.com/jfixby/pin"
 	"github.com/jfixby/vivcourt/util"
 )
@@ -93,17 +94,18 @@ type OrderList struct {
 }
 
 func (b *Book) DoUpdate(ev *Event) {
-	//if ev.OrderType == NEW {
-	//	b.NewOrder(ev)
-	//}
-	//if ev.OrderType == CANCEL {
-	//	b.CancelOrder(ev)
-	//}
-	//if ev.OrderType == FLUSH {
-	//	b.Reset()
-	//	b.over()
-	//}
-
+	if ev.OrderType == ADD {
+		b.NewOrder(ev)
+	}
+	if ev.OrderType == UPDATE {
+		b.UpdateOrder(ev)
+	}
+	if ev.OrderType == DELETE {
+		b.CancelOrder(ev)
+	}
+	if ev.OrderType == EXECUTE {
+		b.ExecuteOrder(ev)
+	}
 }
 
 func (b *Book) NewOrder(ev *Event) {
@@ -115,12 +117,61 @@ func (b *Book) NewOrder(ev *Event) {
 	order.Quantity = ev.Size
 	order.Side = ev.Side
 
-	if b.orderIsTradeable(order) {
-		b.execute(order)
-	} else {
-		b.append(order)
+	b.append(order)
+
+	//if b.orderIsTradeable(order) {
+	//	b.execute(order)
+	//} else {
+	//b.append(order)
+	//
+	//}
+
+}
+
+func (b *Book) UpdateOrder(ev *Event) {
+	orderOld, _ := b.findOrder(ev.OrderID)
+	if orderOld == nil {
+		panic(fmt.Sprintf("Order book is inconsistent. Order <%v> not found.", ev.OrderID))
 	}
 
+	b.removeOrder(ev.OrderID)
+
+	order := &Order{}
+	order.OrderID = ev.OrderID
+	order.Price = ev.Price
+	order.Symbol = ev.Symbol
+	order.Quantity = ev.Size
+	order.Side = ev.Side
+
+	b.append(order)
+}
+
+func (b *Book) ExecuteOrder(ev *Event) {
+	order, _ := b.findOrder(ev.OrderID)
+	if order == nil {
+		panic(fmt.Sprintf("Order book is inconsistent. Order <%v> not found.", ev.OrderID))
+	}
+
+	b.execute(order)
+
+}
+
+func (b *Book) CancelOrder(order *Event) {
+	b.removeOrder(order.OrderID)
+}
+
+func (b *Book) onExecuteOrder(buy *Order, sell *Order, price Price, quantity Quantity) {
+	bev := &BookEvent{}
+	//bev.EventType = TRADE
+
+	//bev.OrderIDBuy = buy.OrderID
+	//
+	//bev.OrderIDSell = sell.OrderID
+	//
+	//bev.Price = price
+	//bev.Quantity = quantity
+
+	b.BookListener.OnBookEvent(bev)
 }
 
 func (b *Book) getMarket(symbol Symbol) *Market {
@@ -190,10 +241,6 @@ func (b *Book) append(order *Order) {
 	return
 }
 
-func (b *Book) CancelOrder(order *Event) {
-	b.removeOrder(order.OrderID)
-}
-
 func (b *Book) execute(order *Order) {
 	market := b.getMarket(order.Symbol)
 
@@ -252,14 +299,14 @@ func (b *Book) execute(order *Order) {
 			if nextOrder.Quantity <= remainingQuantity {
 				quantityToExecute := nextOrder.Quantity
 
-				b.executeOrder(buy, sell, price, quantityToExecute)
+				b.onExecuteOrder(buy, sell, price, quantityToExecute)
 				remainingQuantity = remainingQuantity - quantityToExecute
 				b.removeOrder(nextOrder.OrderID)
 
 			} else {
 				quantityToExecute := remainingQuantity
 
-				b.executeOrder(buy, sell, price, quantityToExecute)
+				b.onExecuteOrder(buy, sell, price, quantityToExecute)
 				nextOrder.Quantity = nextOrder.Quantity - quantityToExecute
 				remainingQuantity = remainingQuantity - quantityToExecute //should be 0
 				orders.totalQuantity = orders.totalQuantity - quantityToExecute
@@ -286,20 +333,6 @@ func Invert(side Side) Side {
 		return BUY
 	}
 	panic("Invalid state")
-}
-
-func (b *Book) executeOrder(buy *Order, sell *Order, price Price, quantity Quantity) {
-	bev := &BookEvent{}
-	//bev.EventType = TRADE
-
-	//bev.OrderIDBuy = buy.OrderID
-	//
-	//bev.OrderIDSell = sell.OrderID
-	//
-	//bev.Price = price
-	//bev.Quantity = quantity
-
-	b.BookListener.OnBookEvent(bev)
 }
 
 func key(price Price) int {
