@@ -13,9 +13,13 @@ func TestOutput(t *testing.T) {
 	testData := filepath.Join(home, "test", "test1")
 	testOutput := filepath.Join(testData, "output", "expected.log")
 
-	test := &testoutput.TestOutput{File: testOutput}
+	test := &output.Output{File: testOutput}
 
-	test.LoadAll()
+	err := test.ReadAll()
+
+	if err != nil {
+		t.Fatal(err)
+	}
 
 	test.Print()
 

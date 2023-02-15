@@ -1,59 +1,63 @@
 package input
 
 import (
+	"bufio"
+	"encoding/json"
 	"github.com/jfixby/pin"
+	"github.com/jfixby/vivcourt/api_input"
 	"io"
+	"io/ioutil"
 	"os"
+	"strings"
 )
 
-type FileReader struct {
-	inputFile string
-	listener  DataListener
-	runFlag   bool
-}
+func ReadAll(input string, listener api_input.EventConsumer) {
+	pin.D("reading", input)
 
-func NewFileReader(inputFile string) *FileReader {
-	return &FileReader{
-		inputFile,
-		nil,
-		false,
-	}
-}
-
-func (r *FileReader) Subscribe(l DataListener) {
-	r.listener = l
-}
-
-func (r *FileReader) IsRunnung() bool {
-	return r.runFlag
-}
-
-func (r *FileReader) Stop() {
-	r.runFlag = false
-}
-
-func (r *FileReader) Run() {
-	if r.runFlag {
+	if input == "" {
+		reader := bufio.NewReader(os.Stdin)
+		ParseBinary(reader, listener)
 		return
 	}
 
-	r.runFlag = true
-	go r.runthread()
-}
-
-func (r *FileReader) runthread() {
-	input := r.inputFile
-	pin.D("reading", input)
 	file, err := os.Open(input)
 	defer file.Close()
 	if err != nil {
 		pin.E("failed to open file", err)
-		r.runFlag = false
+		panic(err)
+	}
+	if strings.HasSuffix(input, ".json") {
+		ParseJson(file, listener)
+	} else if strings.HasSuffix(input, ".stream") {
+		ParseBinary(file, listener)
+	}
+
+}
+
+func ParseJson(r io.Reader, listener api_input.EventConsumer) {
+	b, err := ioutil.ReadAll(r)
+	if err != nil {
 		panic(err)
 	}
 
-	for r.runFlag {
-		sequence, data, err := ReadMessageData(file)
+	allEvents := []api_input.Event{}
+
+	err = json.Unmarshal(b, &allEvents)
+	if err != nil {
+		panic(err)
+	}
+
+	for _, event := range allEvents {
+		if listener != nil {
+			listener.DoProcess(&event)
+		}
+	}
+
+}
+
+func ParseBinary(r io.Reader, listener api_input.EventConsumer) {
+	for {
+		sequence, data, err := ReadMessageData(r)
 
 		if err == io.EOF {
 			break
@@ -61,7 +65,6 @@ func (r *FileReader) runthread() {
 
 		if err != nil {
 			pin.E("failed to read file", err)
-			r.runFlag = false
 			panic(err)
 		}
 
@@ -71,13 +74,11 @@ func (r *FileReader) runthread() {
 		}
 
 		event := ParseEvent(sequence, data)
-		if r.listener != nil {
+		if listener != nil {
 			if event != nil {
-				r.listener.DoProcess(event)
+				listener.DoProcess(event)
 			}
 		}
 
 	}
-
-	r.runFlag = false
 }

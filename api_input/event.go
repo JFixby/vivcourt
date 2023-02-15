@@ -1,6 +1,11 @@
-package orderbook
+package api_input
 
 import "encoding/json"
+
+type EventConsumer interface {
+	Reset()
+	DoProcess(*Event)
+}
 
 type OrderType string
 
@@ -33,25 +38,4 @@ type Event struct {
 func (e *Event) String() string {
 	b, _ := json.Marshal(e)
 	return string(b)
-}
-
-type Executed struct {
-	Price Price
-	Size  Quantity
-}
-
-type BookEvent struct {
-	SequenceNumber SequenceNumber
-	Symbol         Symbol
-	Buy            *[]Executed
-	Sell           *[]Executed
-}
-
-func (e *BookEvent) String() string {
-	b, _ := json.Marshal(e)
-	return string(b)
-}
-
-func (e *BookEvent) Equal(a *BookEvent) bool {
-	return e == a
 }

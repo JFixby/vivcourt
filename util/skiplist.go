@@ -493,6 +493,24 @@ func (s *SkipList) Delete(key interface{}) (value interface{}, ok bool) {
 	return candidate.value, true
 }
 
+//func (s *SkipList) Print() {
+//	if s.Len() == 0 {
+//		return
+//	}
+//	i := s.Iterator()
+//	i.Next()
+//	defer i.Close()
+//	for {
+//		k := i.Key()
+//		v := i.Value()
+//		pin.D(fmt.Sprintf("[%v]", k), v)
+//		if !i.Next() {
+//			break
+//		}
+//	}
+//
+//}
+
 // NewCustomMap returns a new SkipList that will use lessThan as the
 // comparison function. lessThan should define a linear order on keys
 // you intend to use with the SkipList.

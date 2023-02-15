@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="a206880a-db93-45c2-a509-7cb5aabf547e" name="Default Changelist" comment="upload test">
+      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vivcourt.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/api_output/snapshot.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/output/filereader.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/output/parser.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test/test2/output/err.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test/test3/input/in.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test/test3/output/expected.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/datareader.go" beforeDir="false" afterPath="$PROJECT_DIR$/input/parser.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/filereader.go" beforeDir="false" afterPath="$PROJECT_DIR$/input/filereader.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/reader.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/input_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/input_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/orderbook/event.go" beforeDir="false" afterPath="$PROJECT_DIR$/api_input/event.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/orderbook/orderbook.go" beforeDir="false" afterPath="$PROJECT_DIR$/orderbook/book.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/orderbook_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/orderbook_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/output.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/output_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/output_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/util/skiplist.go" beforeDir="false" afterPath="$PROJECT_DIR$/util/skiplist.go" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Go Application" />
+        <option value="Go File" />
+      </list>
+    </option>
+  </component>
+  <component name="GOROOT" path="/usr/local/go" />
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="2LavlfcNZHXXW56esSpP1RpSpZ9" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="DefaultGoTemplateProperty" value="Go File" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="go.import.settings.migrated" value="true" />
+    <property name="go.sdk.automatically.set" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/test" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.path.for.package.tslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/test" />
+      <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/test/test2" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/output" />
+      <recent name="$PROJECT_DIR$/outputapi" />
+      <recent name="$PROJECT_DIR$/api" />
+      <recent name="$PROJECT_DIR$/test" />
+      <recent name="$PROJECT_DIR$/test/test1/output" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Go Test.orderbook_test.go">
+    <configuration name="go build github.com/jfixby/vivcourt" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
+      <module name="vivcourt" />
+      <working_directory value="$PROJECT_DIR$" />
+      <kind value="PACKAGE" />
+      <filePath value="$PROJECT_DIR$/main.go" />
+      <package value="github.com/jfixby/vivcourt" />
+      <directory value="$PROJECT_DIR$" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go build main.go" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
+      <module name="vivcourt" />
+      <working_directory value="$PROJECT_DIR$" />
+      <kind value="FILE" />
+      <filePath value="$PROJECT_DIR$/main.go" />
+      <package value="github.com/jfixby/vivcourt" />
+      <directory value="$PROJECT_DIR$" />
+      <method v="2" />
+    </configuration>
+    <configuration name="TestOrderBook in github.com/jfixby/vivcourt" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+      <module name="vivcourt" />
+      <working_directory value="$PROJECT_DIR$" />
+      <framework value="gotest" />
+      <kind value="PACKAGE" />
+      <package value="github.com/jfixby/vivcourt" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <pattern value="^\QTestOrderBook\E$" />
+      <method v="2" />
+    </configuration>
+    <configuration name="input_test.go" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+      <module name="vivcourt" />
+      <working_directory value="$PROJECT_DIR$" />
+      <framework value="gotest" />
+      <kind value="FILE" />
+      <package value="github.com/jfixby/vivcourt" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$/input_test.go" />
+      <method v="2" />
+    </configuration>
+    <configuration name="orderbook_test.go" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+      <module name="vivcourt" />
+      <working_directory value="$PROJECT_DIR$" />
+      <framework value="gotest" />
+      <kind value="FILE" />
+      <package value="github.com/jfixby/vivcourt" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$/orderbook_test.go" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Go Test.orderbook_test.go" />
+        <item itemvalue="Go Build.go build main.go" />
+        <item itemvalue="Go Test.input_test.go" />
+        <item itemvalue="Go Test.TestOrderBook in github.com/jfixby/vivcourt" />
+        <item itemvalue="Go Build.go build github.com/jfixby/vivcourt" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="upload test" />
+    <option name="LAST_COMMIT_MESSAGE" value="upload test" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="523" y="357" key="#Notifications" timestamp="1676148209370">
+      <screen x="0" y="25" width="1920" height="1010" />
+    </state>
+    <state x="523" y="357" key="#Notifications/0.25.1920.1010@0.25.1920.1010" timestamp="1676148209370" />
+    <state x="696" y="317" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1676122454947">
+      <screen x="0" y="25" width="1920" height="1010" />
+    </state>
+    <state x="696" y="317" key="#com.intellij.fileTypes.FileTypeChooser/0.25.1920.1010@0.25.1920.1010" timestamp="1676122454947" />
+    <state x="473" y="269" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog" timestamp="1676147895452">
+      <screen x="0" y="25" width="1920" height="1010" />
+    </state>
+    <state x="473" y="269" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog/0.25.1920.1010@0.25.1920.1010" timestamp="1676147895452" />
+    <state width="455" height="466" key="DebuggerActiveHint" timestamp="1676327108637">
+      <screen x="0" y="25" width="1920" height="1010" />
+    </state>
+    <state width="455" height="466" key="DebuggerActiveHint/0.25.1920.1010@0.25.1920.1010" timestamp="1676327108637" />
+    <state width="1878" height="271" key="GridCell.Tab.0.bottom" timestamp="1676453034757">
+      <screen x="0" y="25" width="1920" height="1010" />
+    </state>
+    <state width="1878" height="271" key="GridCell.Tab.0.bottom/0.25.1920.1010@0.25.1920.1010" timestamp="1676453034757" />
+    <state width="1878" height="271" key="GridCell.Tab.0.center" timestamp="1676453034756">
+      <screen x="0" y="25" width="1920" height="1010" />
+    </state>
+    <state width="1878" height="271" key="GridCell.Tab.0.center/0.25.1920.1010@0.25.1920.1010" timestamp="1676453034756" />
+    <state width="1878" height="271" key="GridCell.Tab.0.left" timestamp="1676453034755">
+      <screen x="0" y="25" width="1920" height="1010" />
+    </state>
+    <state width="1878" height="271" key="GridCell.Tab.0.left/0.25.1920.1010@0.25.1920.1010" timestamp="1676453034755" />
+    <state width="1878" height="271" key="GridCell.Tab.0.right" timestamp="1676453034756">
+      <screen x="0" y="25" width="1920" height="1010" />
+    </state>
+    <state width="1878" height="271" key="GridCell.Tab.0.right/0.25.1920.1010@0.25.1920.1010" timestamp="1676453034756" />
+    <state width="1878" height="271" key="GridCell.Tab.1.bottom" timestamp="1676453034759">
+      <screen x="0" y="25" width="1920" height="1010" />
+    </state>
+    <state width="1878" height="271" key="GridCell.Tab.1.bottom/0.25.1920.1010@0.25.1920.1010" timestamp="1676453034759" />
+    <state width="1878" height="271" key="GridCell.Tab.1.center" timestamp="1676453034758">
+      <screen x="0" y="25" width="1920" height="1010" />
+    </state>
+    <state width="1878" height="271" key="GridCell.Tab.1.center/0.25.1920.1010@0.25.1920.1010" timestamp="1676453034758" />
+    <state width="1878" height="271" key="GridCell.Tab.1.left" timestamp="1676453034758">
+      <screen x="0" y="25" width="1920" height="1010" />
+    </state>
+    <state width="1878" height="271" key="GridCell.Tab.1.left/0.25.1920.1010@0.25.1920.1010" timestamp="1676453034758" />
+    <state width="1878" height="271" key="GridCell.Tab.1.right" timestamp="1676453034758">
+      <screen x="0" y="25" width="1920" height="1010" />
+    </state>
+    <state width="1878" height="271" key="GridCell.Tab.1.right/0.25.1920.1010@0.25.1920.1010" timestamp="1676453034758" />
+    <state x="294" y="165" key="SettingsEditor" timestamp="1676148099312">
+      <screen x="0" y="25" width="1920" height="1010" />
+    </state>
+    <state x="294" y="165" key="SettingsEditor/0.25.1920.1010@0.25.1920.1010" timestamp="1676148099312" />
+    <state x="385" y="266" key="Vcs.Push.Dialog.v2" timestamp="1676375873953">
+      <screen x="0" y="25" width="1920" height="1010" />
+    </state>
+    <state x="385" y="266" key="Vcs.Push.Dialog.v2/0.25.1920.1010@0.25.1920.1010" timestamp="1676375873953" />
+    <state x="484" y="284" width="602" height="668" key="find.popup" timestamp="1676401734217">
+      <screen x="0" y="25" width="1920" height="1010" />
+    </state>
+    <state x="484" y="284" width="602" height="668" key="find.popup/0.25.1920.1010@0.25.1920.1010" timestamp="1676401734217" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/../kraken/orderbook/orderbook.go</url>
+          <line>247</line>
+          <option name="timeStamp" value="18" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/../kraken/orderbook/orderbook.go</url>
+          <line>120</line>
+          <option name="timeStamp" value="19" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/../kraken/orderbook/orderbook.go</url>
+          <line>97</line>
+          <option name="timeStamp" value="20" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/../kraken/input/filereader.go</url>
+          <line>85</line>
+          <option name="timeStamp" value="22" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/output/filereader.go</url>
+          <line>28</line>
+          <option name="timeStamp" value="24" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/output/filereader.go</url>
+          <line>26</line>
+          <option name="timeStamp" value="25" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/orderbook_test.go</url>
+          <line>57</line>
+          <option name="timeStamp" value="27" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/orderbook/book.go</url>
+          <line>178</line>
+          <option name="timeStamp" value="28" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>

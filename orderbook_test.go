@@ -3,12 +3,13 @@ package main
 import (
 	"github.com/jfixby/pin"
 	"github.com/jfixby/pin/fileops"
+	"github.com/jfixby/vivcourt/api_input"
+	"github.com/jfixby/vivcourt/api_output"
 	"github.com/jfixby/vivcourt/input"
 	"github.com/jfixby/vivcourt/orderbook"
-	testoutput "github.com/jfixby/vivcourt/output"
+	"github.com/jfixby/vivcourt/output"
 	"path/filepath"
 	"testing"
-	"time"
 )
 
 var setup *testing.T
@@ -19,66 +20,58 @@ func TestOrderBook(t *testing.T) {
 
 	// input data
 	home := fileops.Abs("")
-	testData := filepath.Join(home, "test", "test1")
+	testData := filepath.Join(home, "test", "test2")
 	testInput := filepath.Join(testData, "input", "in.stream")
-	testOutput := filepath.Join(testData, "output", "expected.log")
+	testOutput := filepath.Join(testData, "api_output", "expected.log")
 
-	// expected output
-	// expected output
-	expectedOutput := &testoutput.TestOutput{File: testOutput}
-	expectedOutput.LoadAll()
+	// expected api_output
+	// expected api_output
+	expectedOutput := &output.Output{File: testOutput}
+	expectedOutput.ReadAll()
 
 	// TestEnvironment wraps and tests Book component
 	testEnvironment := &TestEnvironment{
 		expectedOutput: expectedOutput}
-	var bookEventListener orderbook.BookListener = testEnvironment
 
 	//create book and subscribe it to TestEnvironment
-	book := orderbook.NewBook(bookEventListener)
+	book := orderbook.NewBook()
 	testEnvironment.book = book
 
 	// expected input will be read as a file and converted into event stream
 	// fed to test environment
-	inputFileReader := input.NewFileReader(testInput)
-	inputFileReader.Subscribe(testEnvironment)
-	inputFileReader.Run()
+	input.ReadAll(testInput, testEnvironment)
 
-	// wait for tests to finish
-	for inputFileReader.IsRunnung() {
-		time.Sleep(2 * time.Second)
-	}
+	book.Print()
 
 	pin.D("EXIT")
 }
 
 type TestEnvironment struct {
-	expectedOutput *testoutput.TestOutput
-	scenario       string
+	expectedOutput *output.Output
 	book           *orderbook.Book
 	counter        int
 }
 
 // Receives input events and feeds them to the Book
-func (t *TestEnvironment) DoProcess(ev *orderbook.Event) {
+func (t *TestEnvironment) DoProcess(ev *api_input.Event) {
 	pin.D("Input ", ev)
 	t.book.DoUpdate(ev)
 }
 
 // Listents for events spawned by the Book and checks them against expected
-func (t *TestEnvironment) OnBookEvent(e *orderbook.BookEvent) {
+func (t *TestEnvironment) OnBookEvent(e *api_output.BookSnapshot) {
 	pin.D("Output", e)
-	expectedEvent := t.expectedOutput.GetEvent(t.scenario, t.counter)
+	expectedEvent := t.expectedOutput.GetLevel(t.counter)
 
-	check(setup, e, expectedEvent, t.scenario, t.counter)
+	check(setup, e, expectedEvent, t.counter)
 	t.counter++
 }
 
-// compares expected output with actual
+// compares expected api_output with actual
 func check(
 	setup *testing.T,
-	actual *orderbook.BookEvent,
-	expected *orderbook.BookEvent,
-	scenario string,
+	actual *api_output.BookSnapshot,
+	expected *api_output.BookSnapshot,
 	counter int) {
 
 	if !expected.Equal(actual) {
@@ -92,9 +85,7 @@ func check(
 }
 
 // Resets book on each scenario
-func (t *TestEnvironment) Reset(scenario string) {
-	pin.D("Next scenario", scenario)
-	t.scenario = scenario
+func (t *TestEnvironment) Reset() {
 	t.counter = 0
 	t.book.Reset()
 }
